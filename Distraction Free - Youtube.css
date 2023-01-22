@@ -1,12 +1,12 @@
 /* ==UserStyle==
 @name           Distraction Free Youtube by arv
 @namespace      github.com/arv-anshul/
-@version        2.5
+@version        3.0.0
 @description    New Ultimate Distraction Free, Enhanced UI/UX with font changing configuration theme for Youtube.com
 @author         arv-anshul
 
 Extensions to use:
-	~> Enhancer for YouTube. >> Enable all ON Theater Mode.
+	~> Enhancer for YouTube.
 	~> Sponsor Blocker.
 	~> Channel Blocker.
 	~> Video Speed Control.
@@ -17,17 +17,15 @@ Inspiration -> Stylus CSS Theme:
 	~> Youtube Dark [somthing like that for sidebar]
 
 @advanced dropdown sans-font "DataFrame Table Font" {
-	ubuntu "Ubuntu*" <<<EOT 'Ubuntu' EOT;
 	merriweather "Merriweather Sans" <<<EOT 'Merriweather Sans' EOT;
 	default "# Defualt #" <<<EOT unset EOT;
 	custom "# Custom #" <<<EOT /*[[custom-sans-font]]*\/ EOT;
 	yt-sans "Youtube Sans" <<<EOT 'Youtube Sans' EOT;
 	poppins "Poppins" <<<EOT 'Poppins' EOT;
-	trebuchet "Trebuchet Ms" <<<EOT 'Trebuchet Ms' EOT;
 	baloo "Baloo 2" <<<EOT 'Baloo 2' EOT;
 	katari "Katari" <<<EOT 'Katari' EOT;
 	gotu "Gotu" <<<EOT 'Gotu' EOT;
-	roboto "Roboto Slab" <<<EOT 'Roboto Slab' EOT;
+	arima "Arima Koshi" <<<EOT 'Arima Koshi' EOT;
 }
 
 @advanced text custom-sans-font "Custom DataFrame Font [If Enabled]" "Kannada MN"
@@ -40,31 +38,37 @@ Inspiration -> Stylus CSS Theme:
 	2 "Medium" <<<EOT scale(1.18) translate3d(0,var(--ytd-miniplayer-playlist-height),0) translate(-7%, -8%) EOT;
 }
 
+@advanced dropdown playlist-pos "Chat/Playlist Position" {
+	1 "Bottom*" <<<EOT column EOT;
+	2 "Top" <<<EOT column-reverse EOT;
+	3 "Side/Side" <<<EOT row EOT;
+}
+
 ==/UserStyle== */
 @-moz-document domain("youtube.com") {
     /* 	YouTube Domain Page */
     @import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,400;0,800;1,400;1,800&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,600;1,300;1,600&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;700&family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-    html {
-        --yt-img-border-radius: 8px;
+    :root {
+        --yt-img-border-radius: 12px;
         --yt-regular-border-radius: 12px;
         --yt-brand-medium-red: #ef4141;
         --transition-all: all 0.25s ease-in-out;
     }
 
     * {
-        font-family: inherit !important;
+        font-family:
+            /*[[sans-font]]*/
+             !important;
         letter-spacing:
             /*[[spacing]]*/
              !important;
     }
 
-    html {
-        font-family:
-            /*[[sans-font]]*/
-             !important;
+    /* Scrollbar */
+    *::-webkit-scrollbar {
+        display: none;
     }
 
     /* 	continuous page scroll disabled */
@@ -104,8 +108,16 @@ Inspiration -> Stylus CSS Theme:
     ytd-guide-entry-renderer[active]>#endpoint tp-yt-paper-item yt-formatted-string {
         fill: var(--yt-brand-medium-red);
         color: var(--yt-brand-medium-red);
+        text-transform: uppercase;
     }
 
+    ytd-guide-entry-renderer[active]>#endpoint tp-yt-paper-item yt-img-shadow {
+        border: 1.5px solid #0002;
+        box-shadow: 0 0 0 1.5px var(--yt-brand-medium-red),
+            -1px 2px 20px #000a;
+        transform: scale(2);
+        z-index: 100;
+    }
 
     #endpoint[title="Shorts"],
     #sections.ytd-guide-renderer>.ytd-guide-renderer:nth-child(3),
@@ -114,12 +126,12 @@ Inspiration -> Stylus CSS Theme:
     #sections.ytd-guide-renderer>.ytd-guide-renderer:nth-child(5)>#items ytd-guide-entry-renderer:nth-child(3),
     #sections.ytd-guide-renderer>.ytd-guide-renderer:nth-child(5)>#items ytd-guide-entry-renderer:nth-child(4),
     #footer .ytd-guide-renderer,
-    ytd-feed-filter-chip-bar-renderer
-
-    /* 	yt searchbox below banner */
-    /* 	ytd-rich-shelf-renderer[is-show-more-hidden] #dismissible.ytd-rich-shelf-renderer  */
-        {
+    ytd-feed-filter-chip-bar-renderer {
         display: none !important;
+    }
+
+    #contents.ytd-rich-grid-renderer {
+        margin-top: 6px
     }
 
     /* 	video page subscribe button */
@@ -133,8 +145,8 @@ Inspiration -> Stylus CSS Theme:
     #dismissible.ytd-rich-grid-video-renderer:hover,
     #dismissible.ytd-rich-grid-slim-media:hover,
     #dismissible.style-scope.ytd-grid-video-renderer:hover {
-        background-color: var(--yt-spec-outline);
-        box-shadow: 0 0 0 5px var(--yt-spec-outline);
+        background-color: var(--yt-spec-light-blue-alpha-30);
+        box-shadow: 0 0 0 5px var(--yt-spec-light-blue-alpha-30);
         border-radius: var(--yt-img-border-radius);
         z-index: 10;
     }
@@ -142,17 +154,12 @@ Inspiration -> Stylus CSS Theme:
     /* 	Youtube My Theme+ - Stylus */
     /* 	thumbnail */
     #player-container.ytd-video-preview,
-    .html5-video-player,
     .html5-video-player .video-click-tracking,
-    .html5-video-player .video-stream,
-    .ytp-gradient-top,
-    .ytp-gradient-bottom,
     .html5-video-player.ytp-autonav-endscreen-cancelled-state.ended-mode,
     .html5-video-player:not(.ytp-transparent),
+    .html5-video-player.ytp-fullscreen,
     .html5-video-player.unstarted-mode,
-    .html5-video-player.ad-showing,
-    .html5-video-player.ended-mode,
-    .html5-video-player.ytp-fullscreen {
+    .html5-video-player .video-stream {
         border-radius: 12px;
     }
 
@@ -161,10 +168,7 @@ Inspiration -> Stylus CSS Theme:
         background-color: #f00;
     }
 
-    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="100%"],
-    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="89%"],
-    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="79%"],
-    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="90%"] {
+    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="100%"] {
         background: #fff0;
     }
 
@@ -172,10 +176,7 @@ Inspiration -> Stylus CSS Theme:
         background-color: #1a1a1a00
     }
 
-    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="100%"]::before,
-    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="89%"]::before,
-    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="79%"]::before,
-    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="90%"]::before {
+    #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="100%"]::before {
         content: '👓 Watched';
         color: white;
         text-shadow: 1px 1px 2px black;
@@ -192,10 +193,7 @@ Inspiration -> Stylus CSS Theme:
         transition: all 0.9s ease-in-out 0.5s;
     }
 
-    #thumbnail:hover #overlays #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="100%"]::before,
-    #thumbnail:hover #overlays #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="89%"]::before,
-    #thumbnail:hover #overlays #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="79%"]::before,
-    #thumbnail:hover #overlays #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="90%"]::before {
+    #thumbnail:hover #overlays #progress.ytd-thumbnail-overlay-resume-playback-renderer[style*="100%"]::before {
         opacity: 0;
         content: '👓 Watch Again?';
     }
@@ -206,16 +204,16 @@ Inspiration -> Stylus CSS Theme:
     /* 	YouTube Subscription Page */
     ytd-two-column-browse-results-renderer.grid:not(.grid-disabled) {
         max-width: none;
-        width: 96% !important;
+        width: 95% !important;
+    }
+
+    #items.ytd-grid-renderer {
+        place-content: space-evenly;
     }
 
     ytd-grid-video-renderer #video-title.yt-simple-endpoint.ytd-grid-video-renderer {
         font-weight: normal;
         font-size-adjust: 0.45;
-    }
-
-    #items.ytd-grid-renderer>ytd-grid-video-renderer.ytd-grid-renderer {
-        margin-right: 10px;
     }
 
     /* 	continous page scroll disable */
@@ -225,13 +223,9 @@ Inspiration -> Stylus CSS Theme:
     }
 }
 
-@-moz-document url-prefix("https://www.youtube.com/watch?v=") {
+@-moz-document url-prefix("https://www.youtube.com/watch") {
 
     /* 	YouTube Video Page */
-    ytd-app {
-        scrollbar-color: #0000 transparent;
-    }
-
     /* 	masthead header */
     #masthead-container.ytd-app {
         transform: translate(0%, -50%);
@@ -248,10 +242,6 @@ Inspiration -> Stylus CSS Theme:
         margin-top: 0px !important;
     }
 
-    video {
-        /* 		transform: scale(1.18); */
-    }
-
     yt-formatted-string.ytd-video-primary-info-renderer,
     .title.ytd-video-primary-info-renderer,
     yt-formatted-string[has-link-only_]:not([force-default-style]) a.yt-simple-endpoint.yt-formatted-string,
@@ -263,7 +253,7 @@ Inspiration -> Stylus CSS Theme:
         font-size-adjust: 0.65;
     }
 
-    /* 	video chapterss */
+    /* 	video chapters */
     .ytp-time-display,
     .ytp-chapter-container button {
         font-size-adjust: 0.52;
@@ -295,21 +285,20 @@ Inspiration -> Stylus CSS Theme:
     }
 
     .ytp-fullerscreen-edu-chevron,
-    #related
-
-    /* 	,#chat */
-        {
+    #related {
         display: none;
     }
 
     #columns.ytd-watch-flexy {
-        flex-direction: column;
+        flex-direction:
+            /*[[playlist-pos]]*/
+        ;
     }
 
     /* 	description */
     #info {
         display: block;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         color: var(--yt-spec-call-to-action);
     }
 
@@ -385,8 +374,8 @@ Inspiration -> Stylus CSS Theme:
 }
 
 @-moz-document url-prefix('https://www.youtube.com/playlist'),
-url-prefix("https://www.youtube.com/results?search_query="),
-url-prefix("https://www.youtube.com/c") {
+url-prefix("https://www.youtube.com/results"),
+url-prefix("https://www.youtube.com/@") {
 
     /* 	YT EXTRAS */
     ytd-continuation-item-renderer.ytd-rich-grid-renderer {
